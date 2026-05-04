@@ -6,7 +6,7 @@ pipeline {
         stage('Install Backend') {
             steps {
                 dir('backend') {
-                    sh 'npm install'
+                    sh 'docker run --rm -v $(pwd):/app -w /app node:18 npm install'
                 }
             }
         }
@@ -14,7 +14,7 @@ pipeline {
         stage('Install Frontend') {
             steps {
                 dir('frontend') {
-                    sh 'npm install'
+                    sh 'docker run --rm -v $(pwd):/app -w /app node:18 npm install'
                 }
             }
         }
