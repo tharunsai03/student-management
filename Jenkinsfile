@@ -6,7 +6,7 @@ pipeline {
         stage('Install Backend') {
             steps {
                 dir('backend') {
-                    bat 'npm install'
+                    sh 'npm install'
                 }
             }
         }
@@ -14,20 +14,20 @@ pipeline {
         stage('Install Frontend') {
             steps {
                 dir('frontend') {
-                    bat 'npm install'
+                    sh 'npm install'
                 }
             }
         }
 
         stage('Docker Build') {
             steps {
-                bat 'docker-compose build'
+                sh 'docker-compose build'
             }
         }
 
         stage('Run Containers') {
             steps {
-                bat 'docker-compose up -d'
+                sh 'docker-compose up -d'
             }
         }
     }
