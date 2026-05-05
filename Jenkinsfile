@@ -1,38 +1,42 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs 'NodeJS-18'  // We'll set this up in Step 2
-    }
-
     stages {
-
-        stage('Install Backend') {
+        stage('Clone Repository') {
             steps {
-                dir('backend') {
-                    sh 'npm install'
-                }
+                echo 'Cloning from GitHub...'
+                checkout scm
             }
         }
 
-        stage('Install Frontend') {
+        stage('Build Docker Images') {
             steps {
-                dir('frontend') {
-                    sh 'npm install'
-                }
-            }
-        }
-
-        stage('Docker Build') {
-            steps {
+                echo 'Building Docker images...'
                 sh 'docker-compose build'
             }
         }
 
         stage('Run Containers') {
             steps {
+                echo 'Starting containers...'
                 sh 'docker-compose up -d'
             }
+        }
+
+        stage('Verify') {
+            steps {
+                echo 'Containers are running!'
+                sh 'docker-compose ps'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+        failure {
+            echo 'Something went wrong.'
         }
     }
 }
