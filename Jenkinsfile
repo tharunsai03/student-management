@@ -1,12 +1,16 @@
 pipeline {
     agent any
 
+    tools {
+        nodejs 'NodeJS-18'  // We'll set this up in Step 2
+    }
+
     stages {
 
         stage('Install Backend') {
             steps {
                 dir('backend') {
-                    sh 'docker run --rm -v $(pwd):/app -w /app node:18 npm install'
+                    sh 'npm install'
                 }
             }
         }
@@ -14,7 +18,7 @@ pipeline {
         stage('Install Frontend') {
             steps {
                 dir('frontend') {
-                    sh 'docker run --rm -v $(pwd):/app -w /app node:18 npm install'
+                    sh 'npm install'
                 }
             }
         }
